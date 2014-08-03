@@ -1,0 +1,4 @@
+PythonAlku
+==========
+
+Ohjelmoinnin aloitus Pythonilla
