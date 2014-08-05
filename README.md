@@ -11,7 +11,7 @@ Koulun koneille on valmiiksi asennettu tarvittavat ohjelmistot. Kaikki tehtävä
 Käytämme Python versiota 3.2 sekä vastaavaa Pygame kirjastoa. On tärkeä huomata, että Python ohjelman ja Pygame kirjaston versioiden täytyy olla samat, muuten ne eivät välttämättä toimi toistensa kanssa.
 
 Lataa Python versio 3.2.5:
-<a href ="https://www.python.org/download/releases/3.2.5/">Python</a><b>
+<a href ="https://www.python.org/download/releases/3.2.5/">Python</a><br>
 Valitse sopiva alusta. Huom! Windowsille ei kannata valita 64 bitin versiota, koska se ei välttämättä toimi Pygame kirjaston kanssa eli valitse:
 
 Windows x86 MSI Installer (3.2.5) (sig) and Visual Studio debug information files (sig)
