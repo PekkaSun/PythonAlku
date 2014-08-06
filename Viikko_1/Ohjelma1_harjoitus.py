@@ -6,7 +6,7 @@ tausta_väri = () #Värimäärittelyt
 #Tehtävä 2: Määritä ikkunan koko, leveys ja korkeus pikseleinä
 (leveys, korkeus) = () #Ikkunan koko
 	 
-ikkuna = pygame.display.set_mode((leveys, korkeus)) #Luodaan ikkuna annetunn kokoisena
+ikkuna = pygame.display.set_mode((leveys, korkeus)) #Luodaan ikkuna annetun kokoisena
 
 #Tehtävä 3: Kirjoita ikkunalle otsikko. Otsikkoteksti lainausmerkkeihin 'Otsikko'
 pygame.display.set_caption() #Ikkunan otsikko

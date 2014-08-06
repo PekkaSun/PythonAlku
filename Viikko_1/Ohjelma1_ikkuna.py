@@ -3,7 +3,7 @@ import pygame #Ladataan pygame-kirjasto
 tausta_väri = (255,255,255) #Värimäärittelyt RGB (Red Green Blue, jokainen väri 0-255)
 (leveys, korkeus) = (300, 200) #Ikkunan koon määritys pikseleinä
 	 
-ikkuna = pygame.display.set_mode((leveys, korkeus)) #Luodaan ikkuna annetunn kokoisena
+ikkuna = pygame.display.set_mode((leveys, korkeus)) #Luodaan ikkuna annetun kokoisena
 pygame.display.set_caption('Ohjelma: 1') #Ikkunan otsikko
 ikkuna.fill(tausta_väri) #Täytetään ikkuna taustavärillä
 	 
