@@ -15,14 +15,14 @@ y = 50 #Ympyrän keskipisteen y-koordinaatti
 pygame.draw.circle (ikkuna, (0,255,0), (x,y), 15, 1)
 
 kierros = 15 #Kierrosten lukumäärä
-toiminnassa = True #Aetetaan toiminnassa-lippu päälle (=tosi)
+toiminnassa = True #Asetetaan toiminnassa-lippu päälle (=tosi)
 
 while kierros>0: #Tehdään niin kauan kun kierroslaskuri on suurempi kuin nolla
     pygame.display.flip() #Päivitetään näyttö
 
     pygame.draw.circle (ikkuna, (0,255,0), (x,y), 15, 1)  #Piirretään ympyrä
     x = x+1 #Lisätään x-koordinaatin arvoa yhdellä	 
-    y += 1 #Sama lisäys voidaan kirjoittaa myös näin
+    y += 1 #Sama yhden lisäys voidaan kirjoittaa myös näin
     kierros -= 1 #Vähennetään kierroslaskuria yhdellä
     
 while toiminnassa:
