@@ -9,9 +9,8 @@ ikkuna.fill(tausta_väri) #Täytetään ikkuna taustavärillä
 	 
 pygame.display.flip() #Päivitetään näyttö
 	 
-toiminnassa = True #Aetetaan toiminnassa-lippu päälle (=tosi)
-while toiminnassa: #Tehdään niin kauan kuin toiminnassa-lippu on tosi
+while True: #Tehdään niin kauan kuin toiminnassa-lippu on tosi
     for event in pygame.event.get(): #Tarkistetaan tapahtumat
         if event.type == pygame.QUIT: #Jos valittu Lopetus-komento, niin
-            toiminnassa = False #lopetetaan toiminta asettamalla lippu pois päältä
+            break # oiminnassa = False #lopetetaan toiminta asettamalla lippu pois päältä
 pygame.quit() #Suljetaan ikkuna
