@@ -6,6 +6,30 @@
 import pygame, sys
 import random
 
+           
+LEVEYS = 800
+KORKEUS = 600
+RUUDUN_KOKO = 20
+KENTAN_LEVEYS = (int)(LEVEYS/RUUDUN_KOKO)
+KENTAN_KORKEUS = (int)(KORKEUS/RUUDUN_KOKO)
+
+
+# Pygamen initialisointi
+pygame.init()
+ 
+# Asetetaan ikkunan korkeus ja leveys
+ikkunan_koko = [LEVEYS, KORKEUS]
+ikkuna = pygame.display.set_mode(ikkunan_koko)
+
+pygame.display.set_caption("Nappaa haamu!")
+
+# Määritellään värit
+musta = (0, 0, 0)
+valkoinen = (255, 255, 255)
+sininen = (0, 0, 255)
+maila_vari = (0, 125, 155)
+teksti_vari = (120,0,200)
+
 def PiirraHahmo(suunta, x, y):
     # Piirretään hahmo
     if suunta == OIKEA:
@@ -50,34 +74,12 @@ def HaeKentta(nimi):
         for line in f:
             Alusta.insert(rivi, line)
             rivi += 1
-            
-LEVEYS = 800
-KORKEUS = 600
-RUUDUN_KOKO = 20
-KENTAN_LEVEYS = (int)(LEVEYS/RUUDUN_KOKO)
-KENTAN_KORKEUS = (int)(KORKEUS/RUUDUN_KOKO)
-
-# Määritellään värit
-musta = (0, 0, 0)
-valkoinen = (255, 255, 255)
-sininen = (0, 0, 255)
-maila_vari = (0, 125, 155)
-teksti_vari = (120,0,200)
-
-# Pygamen initialisointi
-pygame.init()
- 
-# Asetetaan ikkunan korkeus ja leveys
-ikkunan_koko = [LEVEYS, KORKEUS]
-ikkuna = pygame.display.set_mode(ikkunan_koko)
-
-pygame.display.set_caption("Legenda Peli")
 
 # Haetaan kello näytön päivitystä varten
 kello = pygame.time.Clock()
 
 # Luodaan fontti
-fontti = pygame.font.Font(None, 20)
+fontti = pygame.font.Font(None, 80)
 fontti.set_bold(True)
 fontti.set_italic(True)
 
@@ -171,8 +173,8 @@ while not valmis:
     PiirraHahmo(suunta, hahmo_paikka_x, hahmo_paikka_y)
 # -------------------------------------------------------------------------------------------------------------
     # Siiretään haamua
-    haamu_siirto += 1 # Päivitetään haamu paikkaa vain kerran viidestä näytön päivityskerrasta
-    if haamu_siirto > 5:
+    haamu_siirto += 1 # Päivitetään haamu paikkaa vain kerran neljästä näytön päivityskerrasta
+    if haamu_siirto > 4:
         haamu_siirto = 0
         haamu_askeleet += 1
         # Tarkistetaan askeleet ennen muutosta
@@ -203,6 +205,19 @@ while not valmis:
 
     # Piirretään haamu
     PiirraHaamu(haamu_suunta, haamu_paikka_x, haamu_paikka_y)
+
+    if haamu_paikka_x == hahmo_paikka_x and haamu_paikka_y == hahmo_paikka_y:
+        while not valmis:
+            # Huonosti kävi -- haamu sai sinut
+            teksti = "Nappasit haamun!"
+            loppu_teksti = fontti.render(teksti, True, valkoinen)
+            ikkuna.blit(loppu_teksti,(100, 150))
+            pygame.display.flip()
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_x:
+                    # Odotellaan X-näppäintä
+                        valmis = True      
 # --------------------------------------------------------------------------------------------------------------
     # Rajoitetaan päivitys 25 frameen sekunnissa
     kello.tick(25)
