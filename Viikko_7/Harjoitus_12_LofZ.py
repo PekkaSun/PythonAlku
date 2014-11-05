@@ -29,8 +29,6 @@ pygame.display.set_caption("Varo ettei haamu nappaa! Etsi aarteita!")
 musta = (0, 0, 0)
 valkoinen = (255, 255, 255)
 sininen = (0, 0, 255)
-maila_vari = (0, 125, 155)
-teksti_vari = (120,0,200)
 
 def PiirraHahmo(suunta, x, y):
     # Piirretään hahmo
@@ -105,39 +103,65 @@ def HaeKentta(nimi):
 
 # ----------------------------------------------------------------------
 def Lopetus(viesti):
-    valmis = False
-    while not valmis:
+    Uusi = False
+    Valmis = False
+    while not Valmis:
         # Lopputulostus
         # Korostetaan tekstiä kirjoittamalla se kaksi kertaa päällekkäin
         loppu_teksti = fontti.render(viesti, True, musta)
-        ikkuna.blit(loppu_teksti,(100, 150))
+        ikkuna.blit(loppu_teksti,(80, 150))
         loppu_teksti = fontti.render(viesti, True, sininen)
-        ikkuna.blit(loppu_teksti,(97, 147))
-        loppu_teksti = fontti.render("Paina X", True, musta)
+        ikkuna.blit(loppu_teksti,(77, 147))
+        loppu_teksti = fonttiPieni.render("Paina X -> Uusi peli. Paina Q -> Lopeta", True, musta)
         ikkuna.blit(loppu_teksti,(100, 200))
-        loppu_teksti = fontti.render("Paina X", True, sininen)
-        ikkuna.blit(loppu_teksti,(97, 197))
+        loppu_teksti = fonttiPieni.render("Paina X -> Uusi peli. Paina Q -> Lopeta", True, sininen)
+        ikkuna.blit(loppu_teksti,(98, 198))
         
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_x:
-                # Odotellaan X-näppäintä
-                    valmis = True
-    return valmis
+                # Onko X-näppäin
+                    Uusi = True
+                    Valmis = True
+                if event.key == pygame.K_q:
+                # Odotellaan Q-näppäin
+                    Uusi = False
+                    Valmis = True
+    return Uusi
 # ------------------------------------------------------------------------
+
+# Nollaa tiedot uutta peliä varten
+def NollaaTiedot(Haamut, Aarteet):
+    # Nollataan haamujen tiedot
+    for i in range(0, Haamut):
+        haamu_askeleet[i] = 0
+        haamu_siirto[i] = 0
+        haamu_askeleet_ennen_muutosta[i] = random.randrange(15,50)
+        haamu_suunta[i] = random.randrange(1,5) # Valitaan suunta sattumanvaraisesti 1-4
+    HaamujenAloituspaikat()
+
+    # Nollataan aarteiden tiedot
+    aarteita_loydetty = 0
+    AarteidenPaikat()
+    for i in range(0, Aarteet):
+        aarre_haettu[i] = False
+# ---------------------------------------------------------------------------    
 
 # Haetaan kello näytön päivitystä varten
 kello = pygame.time.Clock()
 
-# Luodaan fontti
+# Luodaan fontit
 fontti = pygame.font.Font(None, 80)
 fontti.set_bold(True)
 fontti.set_italic(True)
 
-# Ladataan hahmot
+fonttiPieni = pygame.font.Font(None, 40)
+fonttiPieni.set_bold(True)
+fonttiPieni.set_italic(True)
+
+# Ladataan hahmot ------------------------------------------
 hahmo_y = pygame.image.load("hahmo_y.png") #Ylös
-hahmoRect = hahmo_y.get_rect()
 hahmo_a = pygame.image.load("hahmo_a.png") #Alas
 hahmo_o = pygame.image.load("hahmo_o.png") #Oikea
 hahmo_v = pygame.image.load("hahmo_v.png") #Vasen
@@ -149,7 +173,7 @@ haamu_o = pygame.image.load("haamu_o.png") #Oikea
 haamu_v = pygame.image.load("haamu_v.png") #Vasen
 # ----------------------------------------------------------
 
-# Maaston kuvat
+# Maaston kuvakkeet
 muuri = pygame.image.load("muuri.png") #Muuri
 ruoho = pygame.image.load("maa_1.png") #Ruoho
 vesi = pygame.image.load("vesi.png") #Ruoho
@@ -158,6 +182,9 @@ aarre = pygame.image.load("aarre.png") #Aarre
 
 #Haetaan äänet
 aarre_aani = pygame.mixer.Sound("Boing.wav")
+haamu_aani = pygame.mixer.Sound("Boing1.wav")
+vesi_aani = pygame.mixer.Sound("Boing1.wav")
+
 
 YLOS = 1
 ALAS = 2
@@ -204,6 +231,7 @@ for i in range(0, AARTEITA):
     aarre_haettu.append(False)
     
 # -------- Pääohjelman silmukka -----------
+UusiPeli = False
 while not valmis:    
     for event in pygame.event.get(): # Haetaan tapahtumat, jos niitä on
         if event.type == pygame.QUIT: # Käyttäjä klikkasi Close-komentoa
@@ -243,9 +271,14 @@ while not valmis:
     # Piirretään hahmo
     PiirraHahmo(suunta, hahmo_paikka_x, hahmo_paikka_y)
 
+    # Ollaanko veden päällä?
     if Alusta[hahmo_paikka_y][hahmo_paikka_x] == "V":
-        valmis = Lopetus("Hukuit!")
-
+        vesi_aani.play()
+        UusiPeli = Lopetus("Hukuit!")
+        if not UusiPeli:
+            valmis = True
+            
+    # Löytyikö aarre ja onko kaikki aarteet löydetty
     for i in range(0, AARTEITA):
         if not aarre_haettu[i]:
             PiirraAarre(aarre_paikka_x[i], aarre_paikka_y[i])
@@ -254,10 +287,12 @@ while not valmis:
                 aarre_haettu[i] = True
                 aarteita_loydetty += 1
             if aarteita_loydetty >= AARTEITA:
-                valmis = Lopetus("Voitit!")
+                UusiPeli = Lopetus("Voitit!")
+                if not UusiPeli:
+                    valmis = True
         
 # -------------------------------------------------------------------------------------------------------------
-    # Siiretään haamut
+    # Siiretään haamuja
     for h in range(0, HAAMUJA):
         haamu_siirto[h] += 1 # Päivitetään haamu paikkaa vain kerran neljästä näytön päivityskerrasta
         if haamu_siirto[h] > 4:
@@ -292,8 +327,17 @@ while not valmis:
         # Piirretään haamu
         PiirraHaamu(haamu_suunta[h], haamu_paikka_x[h], haamu_paikka_y[h])
 
+        # Onko haamu samassa ruudussa
         if haamu_paikka_x[h] == hahmo_paikka_x and haamu_paikka_y[h] == hahmo_paikka_y:
-            valmis = Lopetus("Haamu nappasi sinut!")
+            haamu_aani.play()
+            UusiPeli = Lopetus("Haamu nappasi sinut!")
+            if not UusiPeli:
+                valmis = True
+
+        if UusiPeli:
+            UusiPeli = False
+            NollaaTiedot(HAAMUJA, AARTEITA)
+            hahmo_paikka_x, hahmo_paikka_y = HahmonAloituspaikka()
 
 # --------------------------------------------------------------------------------------------------------------
     # Rajoitetaan päivitys 25 frameen sekunnissa
