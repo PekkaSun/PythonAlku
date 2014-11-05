@@ -13,8 +13,8 @@ RUUDUN_KOKO = 20
 KENTAN_LEVEYS = (int)(LEVEYS/RUUDUN_KOKO)
 KENTAN_KORKEUS = (int)(KORKEUS/RUUDUN_KOKO)
 
-global HAAMUJA # Haamujen lukumäärä
-global AARTEITA # Aarteiden lukumäärä
+HAAMUJA = 0 # Haamujen lukumäärä haetaan kentän tiedoista
+AARTEITA = 0 # Aarteiden lukumäärä haetaan kentän tiedoista
 
 # Pygamen initialisointi
 pygame.init()
@@ -64,32 +64,32 @@ def PiirraHaamu(suunta, x, y):
 
 def HaamujenAloituspaikat():
     #Haetaan haamujen aloituspaikat
-    global HAAMUJA
-    HAAMUJA = 0
+    Lukumaara = 0
     for i in range(0,KENTAN_LEVEYS):
         for j in range (0,KENTAN_KORKEUS):
             if Alusta[j][i] == "H":
                 haamu_paikka_x.append(0)
                 haamu_paikka_y.append(0)
                 
-                haamu_paikka_x[HAAMUJA] = i
-                haamu_paikka_y[HAAMUJA] = j
-                HAAMUJA += 1
+                haamu_paikka_x[Lukumaara] = i
+                haamu_paikka_y[Lukumaara] = j
+                Lukumaara += 1
+    return Lukumaara
                 
 # ----------------------------------------------------------------------
 def AarteidenPaikat():
     #Haetaan aarteiden paikat
-    global AARTEITA
-    AARTEITA = 0
+    Lukumaara = 0
     for i in range(0,KENTAN_LEVEYS):
         for j in range (0,KENTAN_KORKEUS):
             if Alusta[j][i] == "A":
                 aarre_paikka_x.append(0)
                 aarre_paikka_y.append(0)
                 
-                aarre_paikka_x[AARTEITA] = i
-                aarre_paikka_y[AARTEITA] = j
-                AARTEITA += 1
+                aarre_paikka_x[Lukumaara] = i
+                aarre_paikka_y[Lukumaara] = j
+                Lukumaara += 1
+    return Lukumaara
                 
 def PiirraAarre(x, y):
     # Piirretään aarre
@@ -186,7 +186,7 @@ haamu_siirto = []
 haamu_askeleet_ennen_muutosta = []
 haamu_suunta = []
 
-HaamujenAloituspaikat()
+HAAMUJA = HaamujenAloituspaikat()
 
 for i in range(0, HAAMUJA):
     haamu_askeleet.append(0)
@@ -199,7 +199,7 @@ aarre_paikka_y = []
 aarre_haettu = []
 aarteita_loydetty = 0
 
-AarteidenPaikat()
+AARTEITA = AarteidenPaikat()
 for i in range(0, AARTEITA):
     aarre_haettu.append(False)
     
