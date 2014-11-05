@@ -26,5 +26,5 @@ X     XXXXX                 XX   H  XXXX
 X           XXXXX           XXXXXX    XX
 X        XXXXX               XX     XXXX
 X    H                        XX      XX
-X                             XX A  XXXX
+X  A                          XX A  XXXX
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
